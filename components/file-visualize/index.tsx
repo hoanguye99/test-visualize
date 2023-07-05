@@ -30,30 +30,10 @@ export interface TestCaseDetail {
     name: string
   }
   tests: {
-    'Verify Json values': boolean
-    'Status code is 200': boolean
-    'Status code is 201': boolean
-    'Status code is 401': boolean
-    'Status code is 400': boolean
+    [key: string]: boolean
   }
   testPassFailCounts: {
-    'Verify Json values': {
-      pass: number
-      fail: number
-    }
-    'Status code is 200': {
-      pass: number
-      fail: number
-    }
-    'Status code is 201': {
-      pass: number
-      fail: number
-    }
-    'Status code is 401': {
-      pass: number
-      fail: number
-    }
-    'Status code is 400': {
+    [key: string]: {
       pass: number
       fail: number
     }
