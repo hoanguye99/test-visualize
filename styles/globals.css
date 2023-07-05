@@ -4,7 +4,7 @@
 
 @layer components {
   .main-table {
-    @apply w-full border-collapse border border-neutral-200 table-fixed;
+    @apply w-full border-collapse border border-neutral-200 table-fixed min-w-max;
   }
   .main-table tr {
     @apply odd:bg-white even:bg-neutral-50;
@@ -72,6 +72,8 @@ a {
 * {
   scrollbar-width: auto;
   scrollbar-color: #bebdbf #ffffff;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
 }
 
 /* Chrome, Edge, and Safari */

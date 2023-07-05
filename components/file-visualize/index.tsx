@@ -25,6 +25,7 @@ export interface TestCaseDetail {
   name: string
   url: string
   time: number
+  timePercentage?: number
   responseCode: {
     code: number
     name: string
@@ -38,6 +39,7 @@ export interface TestCaseDetail {
       fail: number
     }
   }
+  method?: string
 }
 
 interface FileVisualizeProps {

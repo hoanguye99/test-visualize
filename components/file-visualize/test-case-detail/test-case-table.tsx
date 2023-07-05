@@ -16,20 +16,63 @@ const columnHelper = createColumnHelper<TestCaseDetail>()
 const columns = [
   columnHelper.accessor('name', {
     header: () => 'Name',
+    cell: (info) => (
+      <div className="flex flex-col gap-1">
+        <span className="font-medium text-sm">{info.getValue()}</span>
+        <span className="text-neutral-500">{info.row.original.method}</span>
+      </div>
+    ),
     // enableSorting: true,
   }),
   columnHelper.accessor('url', {
     header: () => <span className="">URL</span>,
     cell: (info) => (
-      <span className="whitespace-normal break-words">{info.getValue()}</span>
+      <span className="whitespace-normal break-words text-neutral-500 text-sm">
+        {info.getValue()}
+      </span>
     ),
   }),
   columnHelper.accessor('tests', {
     header: () => 'Test Results',
+    cell: (info) => {
+      const resultArr = Object.values(info.getValue())
+      const isPass = resultArr.reduce((ret, result) => ret && result, true)
+      const total = resultArr.filter((result) => result === isPass).length
+      return (
+        <div className="text-neutral-500">
+          <div className="flex justify-start items-center">
+            {isPass ? (
+              <>
+                <span className="block w-3 h-3 rounded-full bg-blue-500  mr-1.5"></span>
+                <span>Pass</span>
+              </>
+            ) : (
+              <>
+                <span className="block w-3 h-3 rounded-full bg-red-400 mr-1.5"></span>
+                <span>Fail</span>
+              </>
+            )}
+          </div>
+          <p className="ml-5">{`${total}/${resultArr.length}`}</p>
+        </div>
+      )
+    },
   }),
   columnHelper.accessor('time', {
-    header: () => 'Time',
-    // enableSorting: true,
+    header: () => 'Time(ms)',
+    cell: (info) => {
+      return (
+        <>
+          <p className="text-xs text-neutral-500">{info.getValue()}</p>
+          <span
+            style={{
+              width: `${(info.row.original.timePercentage || 0) * 100}%`,
+            }}
+            className="block h-2 rounded-sm bg-green-400"
+          ></span>
+        </>
+      )
+    },
   }),
 ]
 
@@ -51,7 +94,7 @@ const TestCaseTable = (props: TestCaseTableProps) => {
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr
-            className="[&>*:nth-child(1)]:w-[18%] [&>*:nth-child(3)]:w-[20%] [&>*:nth-child(4)]:w-[20%]"
+            className="[&>*:nth-child(2)]:w-[40%] [&>*:nth-child(3)]:w-[17%] [&>*:nth-child(4)]:w-[20%]"
             key={headerGroup.id}
           >
             {headerGroup.headers.map((header) => (
