@@ -1,7 +1,9 @@
 import dayjs from 'dayjs'
 import React from 'react'
 import RequestByStatusChart from './request-by-status-chart'
-import TestCaseDetail from './test-case-detail'
+import { produce } from 'immer'
+import TestCaseDetailTable from './test-case-detail-table'
+import TableView from '../ui/table-view'
 
 export interface MasterData {
   id: string
@@ -48,6 +50,15 @@ interface FileVisualizeProps {
 
 const FileVisualize = (props: FileVisualizeProps) => {
   const data: MasterData = JSON.parse(props.file)
+  const maxTime = Math.max(...data.results.map((result) => result.time))
+  const tableData = data.results.map((result) =>
+    produce(result, (draftState) => {
+      draftState.method = data.collection.requests.find(
+        (obj) => obj.id === draftState.id
+      )?.method
+      draftState.timePercentage = draftState.time / maxTime
+    })
+  )
   return (
     <div className="grid grid-cols-6 gap-2 p-2">
       <div className="col-span-6 bg-white rounded-sm p-3 text-neutral-600 text-lg">
@@ -80,7 +91,7 @@ const FileVisualize = (props: FileVisualizeProps) => {
       </div>
       <div className="col-span-6 bg-white rounded-sm p-3">
         <p className="text-neutral-600 text-lg">Test Case Detail</p>
-        <TestCaseDetail data={data} />
+        <TableView tableData={tableData} table={TestCaseDetailTable} />
       </div>
     </div>
   )

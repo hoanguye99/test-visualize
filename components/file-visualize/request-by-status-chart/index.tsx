@@ -129,7 +129,7 @@ const RequestByStatusChart = (props: RequestByStatusChartProps) => {
       {
         label: 'pass',
         data: Object.values(codeOccurrencePass),
-        backgroundColor: '#2c7be5',
+        backgroundColor: '#22c55e',
         // borderColor: '#2c7be5',
       },
       {

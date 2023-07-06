@@ -8,14 +8,34 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 
-interface TestCaseTableProps {
+interface TestCaseDetailTableProps {
   data: TestCaseDetail[]
 }
 const columnHelper = createColumnHelper<TestCaseDetail>()
 
 const columns = [
+  columnHelper.accessor('name', {
+    header: () => 'Name',
+    cell: (info) => (
+      <span className="font-medium text-sm">{info.getValue()}</span>
+    ),
+    // enableSorting: true,
+  }),
+  columnHelper.accessor('method', {
+    header: () => 'Method',
+    cell: (info) => <span className="text-neutral-500">{info.getValue()}</span>,
+    // enableSorting: true,
+  }),
+  columnHelper.accessor('url', {
+    header: () => <span className="">URL</span>,
+    cell: (info) => (
+      <span className="whitespace-normal break-words text-neutral-500 text-sm italic">
+        {info.getValue()}
+      </span>
+    ),
+  }),
   columnHelper.accessor('tests', {
-    header: () => 'Test Results',
+    header: () => 'Status',
     cell: (info) => {
       const resultArr = Object.values(info.getValue())
       const isPass = resultArr.reduce((ret, result) => ret && result, true)
@@ -25,7 +45,7 @@ const columns = [
           <div className="flex justify-start items-center">
             {isPass ? (
               <>
-                <span className="block w-3 h-3 rounded-full bg-blue-500  mr-1.5"></span>
+                <span className="block w-3 h-3 rounded-full bg-green-500  mr-1.5"></span>
                 <span>Pass</span>
               </>
             ) : (
@@ -40,27 +60,15 @@ const columns = [
       )
     },
   }),
-  columnHelper.accessor('name', {
-    header: () => 'Name',
-    cell: (info) => (
-      <div className="flex flex-col gap-1">
-        <span className="font-medium text-sm">{info.getValue()}</span>
-        <span className="text-neutral-500">{info.row.original.method}</span>
-      </div>
-    ),
-    // enableSorting: true,
-  }),
-  columnHelper.accessor('url', {
-    header: () => <span className="">URL</span>,
-    cell: (info) => (
-      <span className="whitespace-normal break-words text-neutral-500 text-sm">
-        {info.getValue()}
-      </span>
-    ),
-  }),
   columnHelper.accessor('time', {
     header: () => 'Time(ms)',
     cell: (info) => {
+      const color =
+        info.getValue() > 1000
+          ? 'bg-red-500'
+          : info.getValue() > 500
+          ? 'bg-yellow-300'
+          : 'bg-blue-500'
       return (
         <>
           <p className="text-xs text-neutral-500">{info.getValue()}</p>
@@ -68,7 +76,7 @@ const columns = [
             style={{
               width: `${(info.row.original.timePercentage || 0) * 100}%`,
             }}
-            className="block h-2 rounded-sm bg-green-400"
+            className={`block h-2 rounded-sm bg-blue-500 ${color}`}
           ></span>
         </>
       )
@@ -76,7 +84,7 @@ const columns = [
   }),
 ]
 
-const TestCaseTable = (props: TestCaseTableProps) => {
+const TestCaseDetailTable = (props: TestCaseDetailTableProps) => {
   const [input, setInput] = useState(() => [...props.data])
 
   useEffect(() => {
@@ -94,7 +102,7 @@ const TestCaseTable = (props: TestCaseTableProps) => {
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr
-            className="[&>*:nth-child(1)]:w-[10%] [&>*:nth-child(2)]:w-[26%] [&>*:nth-child(4)]:w-[20%]"
+            className="[&>*:nth-child(1)]:w-[26%] [&>*:nth-child(2)]:w-[150px] [&>*:nth-child(4)]:w-[150px] [&>*:nth-child(5)]:w-[20%]"
             key={headerGroup.id}
           >
             {headerGroup.headers.map((header) => (
@@ -125,4 +133,4 @@ const TestCaseTable = (props: TestCaseTableProps) => {
   )
 }
 
-export default TestCaseTable
+export default TestCaseDetailTable

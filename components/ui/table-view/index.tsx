@@ -1,23 +1,13 @@
 import React from 'react'
-import { MasterData } from '..'
-import EmptyView from '@/components/ui/empty-view'
-import TestCaseTable from './test-case-table'
-import { produce } from 'immer'
-interface TestCaseDetailProps {
-  data: MasterData
+import EmptyView from '../empty-view'
+
+interface TableViewProps<T> {
+  tableData: T[]
+  table: (props: { data: T[] }) => React.ReactNode
 }
 
-const TestCaseDetail = (props: TestCaseDetailProps) => {
-  const maxTime = Math.max(...props.data.results.map((result) => result.time))
-  const tableData = props.data.results.map((result) =>
-    produce(result, (draftState) => {
-      draftState.method = props.data.collection.requests.find(
-        (obj) => obj.id === draftState.id
-      )?.method
-      draftState.timePercentage = draftState.time / maxTime
-    })
-  )
-  if (props.data.results.length === 0)
+function TableView<T>(props: TableViewProps<T>) {
+  if (props.tableData.length === 0)
     return (
       <EmptyView className="h-80 rounded-lg m-8">
         <svg
@@ -38,10 +28,12 @@ const TestCaseDetail = (props: TestCaseDetailProps) => {
       </EmptyView>
     )
   return (
-    <div className="h-fit overflow-x-auto">
-      <TestCaseTable data={tableData} />
-    </div>
+    <>
+      <div className="h-fit overflow-x-auto">
+        {props.table({ data: props.tableData })}
+      </div>
+    </>
   )
 }
 
-export default TestCaseDetail
+export default TableView
