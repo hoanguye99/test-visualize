@@ -4,7 +4,7 @@
 
 @layer components {
   .main-table {
-    @apply w-full border-collapse border border-neutral-200 table-fixed min-w-max;
+    @apply w-full border-collapse border border-neutral-200 table-fixed min-w-[1200px];
   }
   .main-table tr {
     @apply odd:bg-white even:bg-neutral-50;

@@ -14,24 +14,6 @@ interface TestCaseTableProps {
 const columnHelper = createColumnHelper<TestCaseDetail>()
 
 const columns = [
-  columnHelper.accessor('name', {
-    header: () => 'Name',
-    cell: (info) => (
-      <div className="flex flex-col gap-1">
-        <span className="font-medium text-sm">{info.getValue()}</span>
-        <span className="text-neutral-500">{info.row.original.method}</span>
-      </div>
-    ),
-    // enableSorting: true,
-  }),
-  columnHelper.accessor('url', {
-    header: () => <span className="">URL</span>,
-    cell: (info) => (
-      <span className="whitespace-normal break-words text-neutral-500 text-sm">
-        {info.getValue()}
-      </span>
-    ),
-  }),
   columnHelper.accessor('tests', {
     header: () => 'Test Results',
     cell: (info) => {
@@ -57,6 +39,24 @@ const columns = [
         </div>
       )
     },
+  }),
+  columnHelper.accessor('name', {
+    header: () => 'Name',
+    cell: (info) => (
+      <div className="flex flex-col gap-1">
+        <span className="font-medium text-sm">{info.getValue()}</span>
+        <span className="text-neutral-500">{info.row.original.method}</span>
+      </div>
+    ),
+    // enableSorting: true,
+  }),
+  columnHelper.accessor('url', {
+    header: () => <span className="">URL</span>,
+    cell: (info) => (
+      <span className="whitespace-normal break-words text-neutral-500 text-sm">
+        {info.getValue()}
+      </span>
+    ),
   }),
   columnHelper.accessor('time', {
     header: () => 'Time(ms)',
@@ -94,7 +94,7 @@ const TestCaseTable = (props: TestCaseTableProps) => {
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr
-            className="[&>*:nth-child(2)]:w-[40%] [&>*:nth-child(3)]:w-[17%] [&>*:nth-child(4)]:w-[20%]"
+            className="[&>*:nth-child(1)]:w-[10%] [&>*:nth-child(2)]:w-[26%] [&>*:nth-child(4)]:w-[20%]"
             key={headerGroup.id}
           >
             {headerGroup.headers.map((header) => (
