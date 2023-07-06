@@ -6,9 +6,9 @@
   .main-table {
     @apply w-full border-collapse border border-neutral-200 table-fixed min-w-[1200px];
   }
-  .main-table tr {
+  /* .main-table tr {
     @apply odd:bg-white even:bg-neutral-50;
-  }
+  } */
   .main-table th {
     @apply text-left uppercase p-5 pr-8 last:pr-4 bg-neutral-50 text-sm text-blue-900;
   }
