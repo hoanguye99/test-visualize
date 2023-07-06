@@ -7,6 +7,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import Link from 'next/link'
 
 interface FailedTestCaseTableProps {
   data: TestCaseDetail[]
@@ -18,7 +19,12 @@ const columns = [
     id: 'name',
     header: () => 'Name',
     cell: (info) => (
-      <span className="font-medium text-sm">{info.getValue()}</span>
+      <Link
+        href={`#name_${info.row.original.name}`}
+        className="font-medium text-sm"
+      >
+        {info.getValue()}
+      </Link>
     ),
     // enableSorting: true,
   }),
@@ -36,7 +42,7 @@ const columns = [
     ),
   }),
   columnHelper.accessor('tests', {
-    header: () => 'Fail Test Cases',
+    header: () => 'error',
     cell: (info) => {
       const obj = info.getValue()
       const keys = Object.keys(obj)
@@ -109,7 +115,6 @@ const FailedTestCaseTable = (props: FailedTestCaseTableProps) => {
                 if (!isNameShown)
                   return (
                     <td key={cell.id} rowSpan={rowSpan} className="border-r">
-                      {rowSpan}{' '}
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

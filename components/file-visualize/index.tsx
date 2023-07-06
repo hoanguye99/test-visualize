@@ -62,9 +62,9 @@ const FileVisualize = (props: FileVisualizeProps) => {
   )
   return (
     <div className="grid grid-cols-6 gap-2 p-2">
-      <div className="col-span-6 bg-white rounded-sm p-3 text-neutral-600 text-lg">
+      <h1 className="col-span-6 bg-white rounded-sm p-3 text-neutral-600 text-lg font-bold">
         {data.name}
-      </div>
+      </h1>
       <div className="md:col-span-2 col-span-6 bg-white rounded-sm h-[350px] flex flex-col justify-center items-center gap-2">
         <p className="text-black text-3xl">
           {dayjs(data.timestamp).format('MMMM D, YYYY')}
@@ -91,7 +91,9 @@ const FileVisualize = (props: FileVisualizeProps) => {
         </div>
       </div>
       <div className="col-span-6 bg-white rounded-sm p-3">
-        <p className="text-red-400 text-lg mb-3">Failed Test Cases</p>
+        <p className="text-neutral-600 text-lg font-bold mb-3">
+          Test Cases Failed
+        </p>
         <TableView
           tableData={tableData.filter((result) =>
             Object.values(result.tests).includes(false)
@@ -100,7 +102,9 @@ const FileVisualize = (props: FileVisualizeProps) => {
         />
       </div>
       <div className="col-span-6 bg-white rounded-sm p-3">
-        <p className="text-neutral-600 text-lg mb-3">Test Case Detail</p>
+        <p className="text-neutral-600 text-lg font-bold mb-3">
+          Test Case Detail
+        </p>
         <TableView tableData={tableData} table={TestCaseDetailTable} />
       </div>
     </div>
