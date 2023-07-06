@@ -64,10 +64,7 @@ const FailedTestCaseTable = (props: FailedTestCaseTableProps) => {
   )
 
   useEffect(() => {
-    const filteredFailCases = props.data.filter((result) =>
-      Object.values(result.tests).includes(false)
-    )
-    setInput(filteredFailCases)
+    setInput(props.data)
   }, [props.data])
 
   const table = useReactTable({
@@ -112,6 +109,7 @@ const FailedTestCaseTable = (props: FailedTestCaseTableProps) => {
                 if (!isNameShown)
                   return (
                     <td key={cell.id} rowSpan={rowSpan} className="border-r">
+                      {rowSpan}{' '}
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

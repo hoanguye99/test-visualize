@@ -92,7 +92,12 @@ const FileVisualize = (props: FileVisualizeProps) => {
       </div>
       <div className="col-span-6 bg-white rounded-sm p-3">
         <p className="text-red-400 text-lg mb-3">Failed Test Cases</p>
-        <TableView tableData={tableData} table={FailedTestCaseTable} />
+        <TableView
+          tableData={tableData.filter((result) =>
+            Object.values(result.tests).includes(false)
+          )}
+          table={FailedTestCaseTable}
+        />
       </div>
       <div className="col-span-6 bg-white rounded-sm p-3">
         <p className="text-neutral-600 text-lg mb-3">Test Case Detail</p>
