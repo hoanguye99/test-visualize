@@ -4,6 +4,7 @@ import RequestByStatusChart from './request-by-status-chart'
 import { produce } from 'immer'
 import TestCaseDetailTable from './test-case-detail-table'
 import TableView from '../ui/table-view'
+import FailedTestCaseTable from './failed-test-case-table'
 
 export interface MasterData {
   id: string
@@ -90,7 +91,11 @@ const FileVisualize = (props: FileVisualizeProps) => {
         </div>
       </div>
       <div className="col-span-6 bg-white rounded-sm p-3">
-        <p className="text-neutral-600 text-lg">Test Case Detail</p>
+        <p className="text-red-400 text-lg mb-3">Failed Test Cases</p>
+        <TableView tableData={tableData} table={FailedTestCaseTable} />
+      </div>
+      <div className="col-span-6 bg-white rounded-sm p-3">
+        <p className="text-neutral-600 text-lg mb-3">Test Case Detail</p>
         <TableView tableData={tableData} table={TestCaseDetailTable} />
       </div>
     </div>
