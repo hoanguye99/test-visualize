@@ -112,13 +112,16 @@ const TestsCaseStatusTable = (props: TestsCaseStatusTableProps) => {
         </div>
         <div className="hidden md:flex">
           <Table table={table1}></Table>
-          <Table table={table2}></Table>
+          <Table table={table2} hiddenHeader={true}></Table>
         </div>
       </div>
     </>
   )
 }
-const Table = (props: { table: Table<TestsCaseStatus> }) => {
+const Table = (props: {
+  table: Table<TestsCaseStatus>
+  hiddenHeader?: boolean
+}) => {
   const { table } = props
   return (
     <>
@@ -137,9 +140,13 @@ const Table = (props: { table: Table<TestsCaseStatus> }) => {
                 >
                   {header.isPlaceholder ? null : (
                     <>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
+                      {!props.hiddenHeader ? (
+                        flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )
+                      ) : (
+                        <div className="h-5"></div>
                       )}
                     </>
                   )}
