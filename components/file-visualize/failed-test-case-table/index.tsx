@@ -1,65 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import { TestCaseDetail } from '..'
 import {
-  ColumnDef,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { TestCaseDetail } from '..'
 
 interface FailedTestCaseTableProps {
   data: TestCaseDetail[]
 }
 const columnHelper = createColumnHelper<TestCaseDetail>()
 
-const columns = [
-  columnHelper.accessor('name', {
-    id: 'name',
-    header: () => 'Name',
-    cell: (info) => (
-      <Link
-        href={`#name_${info.row.original.name}`}
-        className="font-medium text-sm"
-      >
-        {info.getValue()}
-      </Link>
-    ),
-    // enableSorting: true,
-  }),
-  columnHelper.accessor('method', {
-    header: () => 'Method',
-    cell: (info) => <span className="text-neutral-500">{info.getValue()}</span>,
-    // enableSorting: true,
-  }),
-  columnHelper.accessor('url', {
-    header: () => <span className="">URL</span>,
-    cell: (info) => (
-      <span className="whitespace-normal break-words text-neutral-500 text-sm italic">
-        {info.getValue()}
-      </span>
-    ),
-  }),
-  columnHelper.accessor('tests', {
-    header: () => 'error',
-    cell: (info) => {
-      const obj = info.getValue()
-      const keys = Object.keys(obj)
-      return (
-        <div className="flex flex-col gap-1 font-medium text-sm">
-          {keys
-            .filter((key) => obj[key] === false)
-            .map((key) => (
-              <p>{key}</p>
-            ))}
-        </div>
-      )
-    },
-  }),
-]
-
 const FailedTestCaseTable = (props: FailedTestCaseTableProps) => {
+  const router = useRouter()
   const [input, setInput] = useState(() => [...props.data])
 
   const [rowSpanName, setRowSpanName] = useState<{ [key: string]: number }>(
@@ -72,7 +28,58 @@ const FailedTestCaseTable = (props: FailedTestCaseTableProps) => {
   useEffect(() => {
     setInput(props.data)
   }, [props.data])
+  const columns = [
+    columnHelper.accessor('name', {
+      id: 'name',
+      header: () => 'Name',
+      cell: (info) => (
+        <Link
+          href={`#test_case_${info.row.original.id}`}
+          className={`font-medium text-sm ${
+            decodeURIComponent(router.asPath) ===
+            `/#name_${info.row.original.name}`
+              ? 'text-sky-500 font-bold'
+              : ''
+          }`}
+        >
+          {info.getValue()}
+        </Link>
+      ),
 
+      // enableSorting: true,
+    }),
+    columnHelper.accessor('method', {
+      header: () => 'Method',
+      cell: (info) => (
+        <span className="text-neutral-500">{info.getValue()}</span>
+      ),
+      // enableSorting: true,
+    }),
+    columnHelper.accessor('url', {
+      header: () => <span className="">URL</span>,
+      cell: (info) => (
+        <span className="whitespace-normal break-words text-neutral-500 text-sm italic">
+          {info.getValue()}
+        </span>
+      ),
+    }),
+    columnHelper.accessor('tests', {
+      header: () => 'error',
+      cell: (info) => {
+        const obj = info.getValue()
+        const keys = Object.keys(obj)
+        return (
+          <div className="flex flex-col gap-1 font-medium text-sm">
+            {keys
+              .filter((key) => obj[key] === false)
+              .map((key) => (
+                <p>{key}</p>
+              ))}
+          </div>
+        )
+      },
+    }),
+  ]
   const table = useReactTable({
     data: input,
     columns,

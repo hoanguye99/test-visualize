@@ -2,7 +2,7 @@ import FileUpload from '@/components/file-upload'
 import FileVisualize from '@/components/file-visualize'
 import Header from '@/components/layout/header'
 import { Inter } from 'next/font/google'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,12 +16,18 @@ export default function Home() {
     fileReader.onloadend = (e) => {
       const content = fileReader.result
       setJsonString(content as string)
+      sessionStorage.setItem('myData', content as string)
     }
     if (e && e.target && e.target.files) {
       fileReader.readAsText(e.target.files[0])
     }
   }
-
+  useEffect(() => {
+    const storedData = sessionStorage.getItem('myData')
+    if (storedData) {
+      setJsonString(storedData)
+    }
+  }, [])
   return (
     <main className={`min-h-screen bg-neutral-100 ${inter.className}`}>
       <Header loadFile={loadFile} />

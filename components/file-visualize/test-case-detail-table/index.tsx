@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { TestCaseDetail } from '..'
+import { Tooltip } from '@/components/ui/tooltip/tooltip'
 import {
-  ColumnDef,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { Tooltip } from '@/components/ui/tooltip/tooltip'
 import { useRouter } from 'next/router'
-import path from 'path'
+import { useEffect, useState } from 'react'
+import { TestCaseDetail } from '..'
 
 interface TestCaseDetailTableProps {
   data: TestCaseDetail[]
@@ -27,6 +25,14 @@ const TestCaseDetailTable = (props: TestCaseDetailTableProps) => {
   useEffect(() => {
     setInput([...props.data])
   }, [props.data])
+  useEffect(() => {
+    setRowSpanName(
+      input.reduce((map: any, value) => {
+        map[value.name] = (map[value.name] || 0) + 1
+        return map
+      }, {})
+    )
+  }, [input])
   const columnHelper = createColumnHelper<TestCaseDetail>()
 
   const columns = [
@@ -34,9 +40,8 @@ const TestCaseDetailTable = (props: TestCaseDetailTableProps) => {
       id: 'name',
       header: () => 'Name',
       cell: (info) => (
-        <span
-          id={`name_${info.row.original.name}`}
-          className={`font-medium text-sm ${
+        <div
+          className={` font-medium text-sm w-full h-full p-0 ${
             decodeURIComponent(router.asPath) ===
             `/#name_${info.row.original.name}`
               ? 'text-sky-500 font-bold'
@@ -44,7 +49,7 @@ const TestCaseDetailTable = (props: TestCaseDetailTableProps) => {
           }`}
         >
           {info.getValue()}
-        </span>
+        </div>
       ),
       // enableSorting: true,
     }),
@@ -188,7 +193,12 @@ const TestCaseDetailTable = (props: TestCaseDetailTableProps) => {
                   const rowSpan = rowSpanName[row.original.name]
                   if (!isNameShown)
                     return (
-                      <td key={cell.id} rowSpan={rowSpan} className="border-r">
+                      <td
+                        id={`name_${cell.row.original.name}`}
+                        key={cell.id}
+                        rowSpan={rowSpan}
+                        className="border-r"
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

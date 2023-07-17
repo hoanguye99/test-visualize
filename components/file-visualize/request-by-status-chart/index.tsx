@@ -1,17 +1,15 @@
-import React from 'react'
-import { MasterData, TestCaseDetail } from '..'
 import {
   BarElement,
   CategoryScale,
   Chart as ChartJS,
+  Legend,
   LinearScale,
   Tooltip,
-  Legend,
 } from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
-import dayjs from 'dayjs'
 import { memo } from 'react'
 import { Bar } from 'react-chartjs-2'
+import { MasterData, TestCaseDetail } from '..'
 
 ChartJS.register(
   CategoryScale,

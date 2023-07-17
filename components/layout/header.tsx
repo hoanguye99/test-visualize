@@ -22,7 +22,7 @@ const Header = (props: HeaderProps) => {
 
         <title>{siteTitle}</title>
       </Head>
-      <div className="p-2.5 bg-white sticky top-0 left-0 right-0 flex justify-between items-center border-b border-neutral-200">
+      <div className="z-50 shadow-md p-2.5 bg-white sticky top-0 left-0 right-0 flex justify-between items-center border-b border-neutral-200">
         <div></div>
         <Image height={40} src={fptLogo} alt="FPT_company_logo"></Image>
         <div>
